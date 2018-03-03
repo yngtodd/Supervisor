@@ -146,7 +146,7 @@
 
   configureMlr(show.info = FALSE, show.learner.output = TRUE, on.learner.warning = "quiet")
   time <-(proc.time() - ptm)
-  res = mbo(obj.fun, design = design, learner = surr.rf, control = ctrl, show.info = TRUE)
+  res = mbo(obj.fun, design = design, learner = surr.rf, control = ctrl, show.info = FALSE)
   itr_res<-as.data.frame(res$opt.path)
   itr_res<-cbind(itr_res, stime = as.numeric(time[3]))
   all_res <-itr_res
@@ -158,7 +158,7 @@
   #iterative phase starts
   while (nrow(all_res) < max.budget){
     time <-(proc.time() - ptm)
-    print(sprintf("nevals = %03d; itr = %03d; time = %5.5f;", nrow(all_res), itr, as.numeric(time[3])))
+    #print(sprintf("nevals = %03d; itr = %03d; time = %5.5f;", nrow(all_res), itr, as.numeric(time[3])))
     min.index<-which(itr_res$y==min(itr_res$y))
     
     par.set.t = par.set0
@@ -170,12 +170,12 @@
     snames = c("y", pids)
     reqDF = subset(itr_res, select = snames, drop =TRUE)
     bestDF <- reqDF[min.index,]
-    print("reqDF")
-    print(nrow(reqDF))
-    print(summary(reqDF))
+    #print("reqDF")
+    #print(nrow(reqDF))
+    #print(summary(reqDF))
     
     print("itr-rf")
-    train.model <- randomForest(log(y) ~ ., data=reqDF, ntree=100000, keep.forest=TRUE, importance=TRUE)
+    train.model <- randomForest(log(y) ~ ., data=reqDF, keep.forest=TRUE, importance=TRUE)
     var.imp <- importance(train.model, type = 1)
     var.imp[which(var.imp[,1] < 0),1]<-0
     index <- sort(abs(var.imp[,1]),
@@ -239,7 +239,8 @@
     print(yvals)
     
     print(summary(yvals))
-    res = mbo(obj.fun, design = design, learner = surr.rf, control = ctrl, show.info = TRUE)
+
+    res = mbo(obj.fun, design = design, learner = surr.rf, control = ctrl, show.info = FALSE)
     itr_res<-as.data.frame(res$opt.path)
     itr_res<-cbind(itr_res, stime = as.numeric(time[3]))
     itr_res<-tail(itr_res, n = propose.points)

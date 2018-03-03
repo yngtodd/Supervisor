@@ -128,7 +128,7 @@
     }
     #  print(paste("design:", design))
     configureMlr(show.info = FALSE, show.learner.output = FALSE, on.learner.warning = "quiet")
-    res = mbo(obj.fun, design = design, learner = surr.rf, control = ctrl, show.info = TRUE)
+    res = mbo(obj.fun, design = design, learner = surr.rf, control = ctrl, show.info = FALSE)
     return(res)
   }
 
