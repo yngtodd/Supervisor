@@ -22,6 +22,6 @@ export MODEL_NAME="infer"
 CFG_SYS=$THIS/cfg-sys-1.sh
 
 # Set this to a large writable location
-export EXPERIMENTS=/project/projectdirs/m2924/wozniak/Public/data/experiments
+export EXPERIMENTS=../experiments
 
 $EMEWS_PROJECT_ROOT/swift/workflow.sh $SITE -a $CFG_SYS $UPF
